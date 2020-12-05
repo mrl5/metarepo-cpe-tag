@@ -17,6 +17,11 @@ git checkout -b feature/more-ebuild-details
 3. after changes do the PR into the `master` branch
 
 
+## Codestyle
+1. [black](https://pypi.org/project/black/)
+2. [isort](https://pypi.org/project/isort/)
+
+
 ## HUBs, POPs, WTF?
 0. `pop` book: https://pop-book.readthedocs.io/en/latest/
 1. `pop` tutorial: https://pop.readthedocs.io/en/latest/tutorial/quickstart.html
