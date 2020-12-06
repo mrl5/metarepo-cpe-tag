@@ -5,8 +5,27 @@ It main objective is tagging [Funtoo meta-repo] catpkgs with corresponding
 
 
 ## Getting started
+1. init repo
 ```
 make sync
+```
+2. Create python3 virtualenv:
+```
+VENV_DIR="$HOME/.my_virtualenvs/metarepo_cpe_tag"
+mkdir -p "${VENV_DIR}"
+python3 -m venv "${VENV_DIR}"
+```
+3. Switch to new virtualenv:
+```
+source "${VENV_DIR}/bin/activate"
+```
+4. Install requirements:
+```
+python3 setup.py install
+```
+5. **Export PYTHONPATH**:
+```
+export PYTHONPATH=./:./modules/metarepo-to-json
 ```
 
 
