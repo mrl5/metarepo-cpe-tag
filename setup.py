@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r") as readme:
     long_description = readme.read()
 
-requirements = ["pop>=12", "aiohttp>=3.6.2", "GitPython>=3.1.1"]
+requirements = ["pop>=12"]
 dev_requirements = []
 
 setuptools.setup(
