@@ -1,6 +1,6 @@
 # metarepo-cpe-tag
-This is an implementation of [CPE tagger] [Funtoo Linux Optimization Proposal].
-It main objective is tagging [Funtoo meta-repo] catpkgs with corresponding
+This is an implementation of [CPE tagger] from [Funtoo Linux Optimization Proposal]s.
+Main objective is to tag [Funtoo meta-repo] catpkgs with corresponding
 [CPE]s.
 
 

@@ -26,3 +26,6 @@ git checkout -b issue-X
 1. `pop` tutorial: https://pop.readthedocs.io/en/latest/tutorial/quickstart.html
 2. `pop-config`: https://pop-config.readthedocs.io/en/latest/topics/quickstart.html#the-config-dictionary
 3. `pop` patterns: https://pop.readthedocs.io/en/latest/topics/sub_patterns.html
+
+
+[SaltStack pop library]: https://gitlab.com/saltstack/pop/pop
