@@ -47,5 +47,5 @@
       }
     }
   },
-  "required": ["name", "homepages", "versions"]
+  "required": ["name", "versions"]
 }
