@@ -79,12 +79,23 @@ def get_sha1_for_recent_stable_branch(kit):
     return recent_prime_branch["sha1"]
 
 
+def get_recent_stable_branch(kit):
+    prime_branches = list(filter(lambda x: x["stability"] == "prime", kit["branches"]))
+    prime_branches_names = list(map(lambda x: x["name"], prime_branches))
+    prime_branches_names.sort()
+    return prime_branches_names.pop()
+
+
 async def create_kits_file(source, loc):
     kits_instance = hub.metarepo2json.factory.get_kits_instance(source=source)
     await setup_kits_instance(kits_instance)
     kits = await kits_instance.get_result()
     for kit in kits:
-        commit = get_sha1_for_recent_stable_branch(kit)
+        branch_name = get_recent_stable_branch(kit)
+        branch = list(
+            filter(lambda x: x["name"] == branch_name, kit["branches"])
+        ).pop()
+        commit = branch["sha1"]
         kit_path = Path(loc / f"{kit['name']}.json")
         kit_path.touch(mode=0o664)
         cats_instance = hub.metarepo2json.factory.get_categories_instance(
@@ -98,7 +109,8 @@ async def create_kits_file(source, loc):
             )
             await setup_catpkgs_instance(catpkgs_instance, category["name"], commit)
             category["packages"] = await catpkgs_instance.get_result()
-        kit["catpkgs"] = categories
+        branch["catpkgs"] = categories
+        kit["branches"] = [branch]
         with open(kit_path, "w") as f:
             f.write(json.dumps(kit))
 

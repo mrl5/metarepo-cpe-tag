@@ -1,0 +1,19 @@
+{
+  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-to-json/master/metarepo2json/metarepo2json/schemas/category.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "category",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "category name"
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "required": ["name", "packages"]
+}
