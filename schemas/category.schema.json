@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-to-json/master/metarepo2json/metarepo2json/schemas/category.schema.json",
+  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-cpe-tag/master/schemas/category.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "category",
   "type": "object",

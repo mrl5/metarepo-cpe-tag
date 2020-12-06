@@ -1,5 +1,5 @@
 {
-  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-to-json/master/metarepo2json/metarepo2json/schemas/package.schema.json",
+  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-cpe-tag/master/schemas/package.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "package",
   "type": "object",
@@ -47,5 +47,5 @@
       }
     }
   },
-  "required": ["name", "description", "homepages", "licenses", "versions"]
+  "required": ["name", "homepages", "versions"]
 }
