@@ -9,10 +9,9 @@ https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow
 ## TL;DR:
 0. create an issue (with nice description *por favor*)
 1. fork the repo and `git clone` your fork
-2. then create your own branch (e.g. `feature/STH` or `bugfix/STH`) - keep `STH`
-   short, commit messages are for details:
+2. then create your own branch (e.g. `issue-X` or `bugfix/issue-X`) - keep `STH`:
 ```
-git checkout -b feature/more-ebuild-details
+git checkout -b issue-X
 ```
 3. after changes do the PR into the `master` branch
 
