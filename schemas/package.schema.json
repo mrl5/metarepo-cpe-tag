@@ -1,0 +1,51 @@
+{
+  "$id": "https://raw.githubusercontent.com/mrl5/metarepo-to-json/master/metarepo2json/metarepo2json/schemas/package.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "package",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "package name"
+    },
+    "description": {
+      "type": "string",
+      "description": "package description"
+    },
+    "homepages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "project homepage"
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "package license"
+      }
+    },
+    "versions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": "package version"
+          },
+          "cpes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "NVD CPE - structured naming scheme for information technology systems, software, and packages"
+            }
+          }
+        },
+        "required": ["version", "cpes"]
+      }
+    }
+  },
+  "required": ["name", "description", "homepages", "licenses", "versions"]
+}
