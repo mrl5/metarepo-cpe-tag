@@ -23,12 +23,15 @@ def serialize_package_name(hub, funtoo_package: str) -> VendorAndProduct:
     return tuple([vendor, product])
 
 
-def strip_revision(hub, x: str) -> str:
+def strip_revision(hub, x: str) -> Optional[str]:
     if x is not None:
         return sub(r"-r[0-9]{1}$", "", x)
 
 
 def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
+    funtoo_version = (
+        str(funtoo_version) if funtoo_version is not None else funtoo_version
+    )
     if funtoo_version == "0" or funtoo_version == "9999":
         return tuple([None, None])
 
@@ -42,21 +45,18 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
 
 
 def serialize_package_json(hub, package: dict) -> list:
-    quasi_cpes = []
     try:
         versions = package["versions"]
         if not isinstance(versions, list):
-            raise hub.cpe_tag.errors.SerializeError("package in invalid format")
+            raise hub.cpe_tag.errors.SerializerError("package in invalid format")
 
         vendor, product = serialize_package_name(hub, package["name"])
         for v in versions:
-            version, update = serialize_version(hub, str(v))
+            version, update = serialize_version(hub, str(v["version"]))
             if version is not None:
-                quasi_cpes.append(
-                    hub.cpe_tag.generators.get_quasi_cpe(
-                        product=product, version=version, update=update, vendor=vendor
-                    )
+                v["quasi_cpe"] = hub.cpe_tag.generators.get_quasi_cpe(
+                    vendor=vendor, product=product, version=version, update=update
                 )
-        return list(set(quasi_cpes))
+        return package
     except KeyError:
-        raise hub.cpe_tag.errors.SerializeError("package in invalid format")
+        raise hub.cpe_tag.errors.SerializerError("package in invalid format")

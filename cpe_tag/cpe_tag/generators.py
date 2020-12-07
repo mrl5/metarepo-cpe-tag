@@ -2,11 +2,47 @@
 
 
 def get_quasi_cpe(hub, **wfn_attrs) -> str:
-    vendor = wfn_attrs["vendor"] if "vendor" in wfn_attrs else None
-    product = wfn_attrs["product"] if "product" in wfn_attrs else None
-    version = wfn_attrs["version"] if "version" in wfn_attrs else None
-    update = wfn_attrs["update"] if "update" in wfn_attrs else None
-    if product is None:
-        raise TypeError("vendor param is required")
+    vendor = (
+        wfn_attrs["vendor"]
+        if "vendor" in wfn_attrs and wfn_attrs["vendor"] is not None
+        else ""
+    )
+    product = (
+        wfn_attrs["product"]
+        if "product" in wfn_attrs and wfn_attrs["product"] is not None
+        else ""
+    )
+    version = (
+        wfn_attrs["version"]
+        if "version" in wfn_attrs and wfn_attrs["version"] is not None
+        else ""
+    )
+    update = (
+        wfn_attrs["update"]
+        if "update" in wfn_attrs and wfn_attrs["update"] is not None
+        else ""
+    )
+
+    if len(product) == 0 or len(version) == 0:
+        raise hub.cpe_tag.errors.GeneratorError("missing required params")
     parts = [vendor, product, version, update]
-    return ":".join(list(filter(lambda x: x is not None, parts)))
+    return ":".join(parts)
+
+
+def convert_quasi_cpe_to_regex(hub, quasi_cpe: str) -> str:
+    vendor, product, version, update = quasi_cpe.split(":")
+    update = "[\\*\\-]" if len(update) == 0 else f"({update}|[\\*])"
+    parts = [vendor, product, version, update]
+    return ":".join(parts)
+
+
+def enrich_package_with_cpes(hub, package: dict, **kwargs) -> dict:
+    versions = package["versions"]
+    for v in versions:
+        v["cpes"] = list(
+            set(hub.cpe_tag.searchers.query_cpe_match(v["quasi_cpe"], **kwargs))
+        )
+        v["cpes"].sort()
+        del v["quasi_cpe"]
+    package["versions"] = versions
+    return package
