@@ -1,9 +1,7 @@
 from pathlib import Path
 
-
 CONFIG = {
-    "package": {"default": None, "help": "package name from meta-repo"},
-    "version": {"default": None, "help": "version in funtoo format (e.g. 1.2_p1-r1)"},
+    "package_json": {"default": None, "help": "funtoo package in JSON format"},
     "cpe_match_feed": {
         "default": str(Path.home() / "feeds/json/nvdcpematch-1.0.json.gz"),
         "help": "location of NVD CPE Match Feed on filesystem",
@@ -11,8 +9,11 @@ CONFIG = {
 }
 
 CLI_CONFIG = {
-    "package": {"package": ["-p", "--package"], "os": "PACKAGE", "type": str},
-    "version": {"version": ["-v", "--version"], "os": "VERSION", "type": str},
+    "package_json": {
+        "package": ["-p", "--package-json"],
+        "os": "PACKAGE",
+        "type": str,
+    },
     "cpe_match_feed": {
         "cpe_match_feed": ["-f", "--cpe-match-feed"],
         "os": "CPE_MATCH_FEED",

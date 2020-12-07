@@ -11,7 +11,7 @@ hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
 mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:google:chrome:80.0.3976.1:*:*:*:*:*:*:*"\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:*:*:*:*:*:*:*"\n',
-    '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*"\n',
+    '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*",\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:p1:*:*:*:*:*:*"\n',
 ]
 
@@ -103,4 +103,7 @@ def test_convert_quasi_cpe_to_regex(convert_quasi_cpe_to_regex, quasi_cpe, expec
 
 @pytest.mark.parametrize("feed, package, expected", tag_package_testdata)
 def test_tag_package_with_cpes(tag_package_with_cpes, package, expected, feed):
-    assert tag_package_with_cpes(package, feed=feed) == expected
+    result = tag_package_with_cpes(package, feed=feed)
+    assert result["product"] == expected["product"]
+    for v in result["versions"]:
+        assert any(list(map(lambda x: x == v, expected["versions"]))) is True
