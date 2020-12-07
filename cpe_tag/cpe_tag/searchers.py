@@ -15,6 +15,10 @@ def safe_search(pattern: str, line: str) -> str:
 
 def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
+
+    if quasi_cpe is None:
+        return matches
+
     pattern = hub.cpe_tag.generators.convert_quasi_cpe_to_regex(quasi_cpe)
     if feed is None:
         feed_loc = hub.OPT.cpe_tag.cpe_match_feed
