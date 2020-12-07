@@ -36,13 +36,18 @@ def convert_quasi_cpe_to_regex(hub, quasi_cpe: str) -> str:
     return ":".join(parts)
 
 
-def enrich_package_with_cpes(hub, package: dict, **kwargs) -> dict:
+def tag_package_with_cpes(hub, package: dict, **kwargs) -> dict:
     versions = package["versions"]
     for v in versions:
-        v["cpes"] = list(
-            set(hub.cpe_tag.searchers.query_cpe_match(v["quasi_cpe"], **kwargs))
-        )
-        v["cpes"].sort()
-        del v["quasi_cpe"]
+        if "quasi_cpe" not in v:
+            pass
+        elif v["quasi_cpe"] is None:
+            del v["quasi_cpe"]
+        else:
+            v["cpes"] = list(
+                set(hub.cpe_tag.searchers.query_cpe_match(v["quasi_cpe"], **kwargs))
+            )
+            v["cpes"].sort()
+            del v["quasi_cpe"]
     package["versions"] = versions
     return package

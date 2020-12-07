@@ -19,14 +19,14 @@ testnames = [
 ]
 
 testversions = [
-        ("1.2", tuple(["1.2", None])),
-        ("1.2-r1", tuple(["1.2", None])),
-        ("1.3_p1", tuple(["1.3", "p1"])),
-        ("1.3_p1-r1", tuple(["1.3", "p1"])),
-        ("9999", tuple([None, None])),
-        (9999, tuple([None, None])),
-        ("0", tuple([None, None])),
-        (0, tuple([None, None])),
+    ("1.2", tuple(["1.2", None])),
+    ("1.2-r1", tuple(["1.2", None])),
+    ("1.3_p1", tuple(["1.3", "p1"])),
+    ("1.3_p1-r1", tuple(["1.3", "p1"])),
+    ("9999", tuple([None, None])),
+    (9999, tuple([None, None])),
+    ("0", tuple([None, None])),
+    (0, tuple([None, None])),
 ]
 
 errordata = (

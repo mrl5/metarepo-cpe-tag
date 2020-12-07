@@ -5,7 +5,7 @@ from re import search, sub
 
 
 def get_cpe_uri_from_json_line(hub, json_line: str) -> str:
-    return ':'.join(json_line.split(':')[1:]).strip().replace('"', "")
+    return ":".join(json_line.split(":")[1:]).strip().replace('"', "")
 
 
 def safe_search(pattern: str, line: str) -> str:

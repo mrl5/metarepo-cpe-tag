@@ -46,11 +46,7 @@ testdata = [
         ":nicotine+:13.37:",
         ["cpe:2.3:a:test:nicotine+:13.37:-:*:*:*:*:*:*"],
     ),
-    (
-        mock_nvdcpematch,
-        None,
-        [],
-    ),
+    (mock_nvdcpematch, None, [],),
 ]
 
 

@@ -96,7 +96,7 @@ async def dump_category(category, kit_name, commit, kitdir):
 
 
 async def dump_kit(source, workdir, kit):
-    kit_name = kit['name']
+    kit_name = kit["name"]
     kitdir = workdir / kit_name
     Path.mkdir(kitdir, parents=True, exist_ok=True)
     branch_name = get_recent_stable_branch(kit)
