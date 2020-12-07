@@ -14,7 +14,7 @@ mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:google:chrome:80.0.3977.1:*:*:*:*:*:*:*"\n',
     '      "cpe23Uri" : "cpe:2.3:a:google:chrome:80.0.3987.87:*:*:*:*:*:*:*"\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:*:*:*:*:*:*:*"\n',
-    '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*"\n',
+    '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*",\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:p1:*:*:*:*:*:*"\n',
     '      "cpe23Uri" : "cpe:2.3:a:test:nicotine+:13.37:-:*:*:*:*:*:*"\n',
 ]
@@ -66,9 +66,10 @@ def test_get_cpe_uri_from_json_line(get_cpe_uri_from_json_line):
     assert get_cpe_uri_from_json_line(testdata) == expected
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("feed,pattern,expected", testdata)
-def test_query_cpe_match(query_cpe_match, feed, pattern, expected):
-    result = query_cpe_match(pattern, feed=feed)
+async def test_query_cpe_match(query_cpe_match, feed, pattern, expected):
+    result = await query_cpe_match(pattern, feed=feed)
     result.sort()
     expected.sort()
     assert result == expected
