@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
+from re import sub
 
 
 def get_quasi_cpe(hub, **wfn_attrs) -> str:
@@ -32,7 +33,8 @@ def get_quasi_cpe(hub, **wfn_attrs) -> str:
 
 
 def convert_quasi_cpe_to_regex(hub, quasi_cpe: str) -> str:
-    vendor, product, version, update = quasi_cpe.split(":")
+    input_with_escaped_special_regex_chars = sub(r"[+]", "\\+", quasi_cpe)
+    vendor, product, version, update = input_with_escaped_special_regex_chars.split(":")
     update = "[\\*\\-]" if len(update) == 0 else f"({update}|[\\*])"
     parts = [vendor, product, version, update]
     return ":".join(parts)
@@ -49,12 +51,13 @@ async def tag_version(hub, v: dict, **kwargs) -> dict:
         )
         v["cpes"].sort()
         del v["quasi_cpe"]
-        v["cpes"].sort()
     return v
 
 
 async def tag_versions(hub, versions: list, **kwargs) -> list:
-    done_tasks, _ = await asyncio.wait([tag_version(hub, v, **kwargs) for v in versions])
+    done_tasks, _ = await asyncio.wait(
+        [tag_version(hub, v, **kwargs) for v in versions]
+    )
     return list(map(lambda x: x.result(), done_tasks))
 
 

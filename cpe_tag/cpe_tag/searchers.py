@@ -8,11 +8,6 @@ def get_cpe_uri_from_json_line(hub, json_line: str) -> str:
     return sub(r",$", "", ":".join(json_line.split(":")[1:]).strip().replace('"', ""))
 
 
-def safe_search(pattern: str, line: str) -> str:
-    escaped = sub(r"[+]", "\\+", pattern)
-    return search(escaped, line)
-
-
 async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
 
@@ -29,13 +24,13 @@ async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
         )
         stdout, stderr = await proc.communicate()
         for line in stdout.decode("utf-8").splitlines():
-            s = safe_search(pattern, line)
+            s = search(pattern, line)
             if s is not None:
                 matches.append(get_cpe_uri_from_json_line(hub, s.string))
 
     else:
         for line in feed:
-            s = safe_search(pattern, line)
+            s = search(pattern, line)
             if s is not None:
                 matches.append(get_cpe_uri_from_json_line(hub, s.string))
     return list(set(matches))

@@ -27,7 +27,7 @@ quasi_cpe_testdata = [
         ":def:1.2.3:p2",
         ":def:1.2.3:(p2|[\\*])",
     ),
-    ({"product": "ghi", "version": "1337"}, ":ghi:1337:", ":ghi:1337:[\\*\\-]"),
+    ({"product": "ghi+", "version": "1337"}, ":ghi+:1337:", ":ghi\\+:1337:[\\*\\-]"),
 ]
 
 tag_package_testdata = [
