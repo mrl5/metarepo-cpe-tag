@@ -10,7 +10,7 @@ Check this example: https://nvd.nist.gov/products/cpe/search/results?namingForma
 
 Notice how easy is to list all [CVE]s for given [CPE]. Using [CPE]s allows you to
 have reliable [CVE] tracker for each version of a package that is present in the
-repo use [CPE].
+repo.
 
 
 ## Getting started
