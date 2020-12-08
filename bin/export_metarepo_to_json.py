@@ -85,6 +85,7 @@ async def get_catpkgs(category, kit_name, commit):
 
 
 async def dump_category(category, kit_name, commit, kitdir):
+    print(f"dumping [{kit_name}] {category['name']} ...")
     catpkgs = await get_catpkgs(category, kit_name, commit)
     cat_path = Path(kitdir / f"{category['name']}.json")
     cat_path.touch(mode=0o664)
