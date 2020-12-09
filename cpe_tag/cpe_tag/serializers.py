@@ -23,7 +23,7 @@ def serialize_package_name(hub, funtoo_package: str) -> VendorAndProduct:
     return tuple([vendor, product])
 
 
-def strip_revision(hub, x: str) -> Optional[str]:
+def strip_revision(x: str) -> Optional[str]:
     if x is not None:
         return sub(r"-r[0-9]{1}$", "", x)
 
@@ -41,7 +41,7 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
         version = funtoo_version
         update = None
 
-    return tuple([strip_revision(hub, version), strip_revision(hub, update)])
+    return tuple([strip_revision(version), strip_revision(update)])
 
 
 def serialize_package_json(hub, package: dict) -> list:

@@ -32,7 +32,7 @@ def get_quasi_cpe(hub, **wfn_attrs) -> str:
     return ":".join(parts)
 
 
-def convert_quasi_cpe_to_regex(hub, quasi_cpe: str) -> str:
+def convert_quasi_cpe_to_regex(quasi_cpe: str) -> str:
     input_with_escaped_special_regex_chars = sub(r"[+]", "\\+", quasi_cpe)
     vendor, product, version, update = input_with_escaped_special_regex_chars.split(":")
     update = "[\\*\\-]" if len(update) == 0 else f"({update}|[\\*])"

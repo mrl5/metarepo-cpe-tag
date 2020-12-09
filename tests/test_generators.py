@@ -4,6 +4,8 @@
 import pop.hub
 import pytest
 
+from cpe_tag.cpe_tag.generators import convert_quasi_cpe_to_regex
+
 hub = pop.hub.Hub()
 hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
 
@@ -73,11 +75,6 @@ def get_quasi_cpe():
 
 
 @pytest.fixture(scope="function")
-def convert_quasi_cpe_to_regex():
-    return hub.cpe_tag.generators.convert_quasi_cpe_to_regex
-
-
-@pytest.fixture(scope="function")
 def tag_package_with_cpes():
     return hub.cpe_tag.generators.tag_package_with_cpes
 
@@ -97,7 +94,7 @@ def test_get_quasi_cpe(get_quasi_cpe, params, expected, _):
 
 
 @pytest.mark.parametrize("_, quasi_cpe, expected", quasi_cpe_testdata)
-def test_convert_quasi_cpe_to_regex(convert_quasi_cpe_to_regex, quasi_cpe, expected, _):
+def test_convert_quasi_cpe_to_regex(quasi_cpe, expected, _):
     assert convert_quasi_cpe_to_regex(quasi_cpe) == expected
 
 
