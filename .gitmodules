@@ -1,3 +1,0 @@
-[submodule "modules/metarepo-to-json"]
-	path = modules/metarepo-to-json
-	url = https://github.com/mrl5/metarepo-to-json.git
