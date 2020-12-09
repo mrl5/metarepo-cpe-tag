@@ -40,56 +40,6 @@ input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29
 export PYTHONPATH=./
 ./bin/tag_package_with_cpes.py --package-json "$input"
 ```
-6. Get metarepo2json plugin and export meta-repo to json:
-```
-make sync &&
-  cd modules/metarepo-to-json/ &&
-  python3 setup.py install &&
-  cd -
-
-export PYTHONPATH=./:./modules/metarepo-to-json
-./bin/export_metarepo_to_json.py
-```
-7. install GNU parallel to make it faster:
-```
-emerge -av sys-process/parallel
-```
-8. generate tags for each package in kit
-```
-metarepodir=~/metarepo_dump
-kit=core-kit
-kitdir=$metarepodir/$kit
-parallel_jobs=8
-
-rm -f $kitdir/*.tagged $kitdir/*.err
-for catpkgs in `ls $kitdir`; do
-    echo tagging [$kit] $catpkgs ...
-    cat $kitdir/$catpkgs |
-        parallel -j${parallel_jobs} \
-            "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
-                1>>$kitdir/$catpkgs.tagged \
-                2>>$kitdir/$catpkgs.err
-done
-```
-9. if you want do it for all kits
-```
-metarepodir=~/metarepo_dump
-parallel_jobs=8
-
-for kit in `ls $metarepodir`; do
-    kitdir=$metarepodir/$kit
-    rm -f $kitdir/*.tagged $kitdir/*.err
-    for catpkgs in `ls $kitdir`; do
-        echo tagging [$kit] $catpkgs ...
-        cat $kitdir/$catpkgs |
-            parallel -j${parallel_jobs} \
-                "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
-                    1>>$kitdir/$catpkgs.tagged \
-                    2>>$kitdir/$catpkgs.err
-    done
-done
-```
-
 
 ## I want to contribute/learn more technical details
 Check out [CONTRIBUTING](CONTRIBUTING.md)
