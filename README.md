@@ -25,7 +25,7 @@ source "${VENV_DIR}/bin/activate"
 ```
 3. Install requirements:
 ```
-python3 setup.py install
+pip install -e .
 ```
 4. Download CPE feed:
 ```
@@ -61,14 +61,14 @@ kit=core-kit
 kitdir=$metarepodir/$kit
 parallel_jobs=8
 
-rm -f $kitdir/*.tagged \
-    $kitdir/*.err
+rm -f $kitdir/*.tagged $kitdir/*.err
 for catpkgs in `ls $kitdir`; do
     echo tagging [$kit] $catpkgs ...
     cat $kitdir/$catpkgs |
-        parallel -j$parallel_jobs "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
-            1>>$kitdir/$catpkgs.tagged \
-            2>>$kitdir/$catpkgs.err
+        parallel -j${parallel_jobs} \
+            "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
+                1>>$kitdir/$catpkgs.tagged \
+                2>>$kitdir/$catpkgs.err
 done
 ```
 9. if you want do it for all kits
@@ -78,14 +78,14 @@ parallel_jobs=8
 
 for kit in `ls $metarepodir`; do
     kitdir=$metarepodir/$kit
-    rm -f $kitdir/*.tagged \
-        $kitdir/*.err
+    rm -f $kitdir/*.tagged $kitdir/*.err
     for catpkgs in `ls $kitdir`; do
         echo tagging [$kit] $catpkgs ...
         cat $kitdir/$catpkgs |
-            parallel -j$parallel_jobs "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
-                1>>$kitdir/$catpkgs.tagged \
-                2>>$kitdir/$catpkgs.err
+            parallel -j${parallel_jobs} \
+                "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py --package-json" \
+                    1>>$kitdir/$catpkgs.tagged \
+                    2>>$kitdir/$catpkgs.err
     done
 done
 ```

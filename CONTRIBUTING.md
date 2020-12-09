@@ -9,11 +9,15 @@ https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow
 ## TL;DR:
 0. create an issue (with nice description *por favor*)
 1. fork the repo and `git clone` your fork
-2. then create your own branch (e.g. `issue-X` or `bugfix/issue-X`) - keep `STH`:
+2. install dev dependencies
+```
+pip install -e .[dev]
+```
+3. then create your own branch (e.g. `issue-X` or `bugfix/issue-X`) - keep `STH`:
 ```
 git checkout -b issue-X
 ```
-3. after changes do the PR into the `master` branch
+4. after changes do the PR into the `master` branch
 
 
 ## Codestyle

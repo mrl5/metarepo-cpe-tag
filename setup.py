@@ -3,8 +3,13 @@ import setuptools
 with open("README.md", "r") as readme:
     long_description = readme.read()
 
-requirements = ["pop>=12"]
-dev_requirements = ["pytest>=5.4.1", "pytest-asyncio>=0.10.0"]
+requirements = ["pop>=16"]
+linters = ["black", "flake8", "isort"]
+dev_requirements = [
+    *linters,
+    "pytest>=5.4.1",
+    "pytest-asyncio>=0.10.0"
+]
 
 setuptools.setup(
     name="metarepo_cpe_tag",
