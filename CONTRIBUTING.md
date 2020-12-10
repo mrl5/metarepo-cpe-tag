@@ -26,10 +26,11 @@ git checkout -b issue-X
 
 
 ## HUBs, POPs, WTF?
-0. `pop` book: https://pop-book.readthedocs.io/en/latest/
-1. `pop` tutorial: https://pop.readthedocs.io/en/latest/tutorial/quickstart.html
-2. `pop-config`: https://pop-config.readthedocs.io/en/latest/topics/quickstart.html#the-config-dictionary
-3. `pop` patterns: https://pop.readthedocs.io/en/latest/topics/sub_patterns.html
+0. [my pop framework fairytale](https://github.com/mrl5/private-wiki/blob/master/pop-framework-fairy-tale.md)
+1. `pop` book: https://pop-book.readthedocs.io/en/latest/
+2. `pop` tutorial: https://pop.readthedocs.io/en/latest/tutorial/quickstart.html
+3. `pop-config`: https://pop-config.readthedocs.io/en/latest/topics/quickstart.html#the-config-dictionary
+4. `pop` patterns: https://pop.readthedocs.io/en/latest/topics/sub_patterns.html
 
 
 [SaltStack pop library]: https://gitlab.com/saltstack/pop/pop
