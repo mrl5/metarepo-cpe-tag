@@ -3,7 +3,8 @@
 
 import os
 import shutil
-from setuptools import setup, Command
+
+from setuptools import Command, setup
 
 NAME = "cpe_tag"
 DESC = "Tool for tagging Funtoo package with CPEs"
@@ -77,6 +78,6 @@ setup(
         "Development Status :: 5 - Production/Stable",
     ],
     packages=discover_packages(),
-    entry_points={"console_scripts": ["cpe_tag = cpe_tag.scripts:start"]}, # todo
+    entry_points={"console_scripts": ["cpe_tag = cpe_tag.scripts:start"]},  # todo
     cmdclass={"clean": Clean},
 )
