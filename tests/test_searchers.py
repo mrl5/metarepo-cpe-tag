@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
+from uuid import uuid4
 
 import pop.hub
 import pytest
-
 from cpe_tag.cpe_tag.searchers import get_cpe_uri_from_json_line
 
 hub = pop.hub.Hub()
 hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
-
 
 mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:google:chrome:80.0.3976.1:*:*:*:*:*:*:*"\n',
@@ -48,8 +47,17 @@ testdata = [
         ":nicotine+:13.37:",
         ["cpe:2.3:a:test:nicotine+:13.37:-:*:*:*:*:*:*"],
     ),
-    (mock_nvdcpematch, None, [],),
+    (
+        mock_nvdcpematch,
+        None,
+        [],
+    ),
 ]
+
+
+@pytest.fixture(scope="function")
+def get_feed():
+    return hub.cpe_tag.searchers.get_feed
 
 
 @pytest.fixture(scope="function")
@@ -70,3 +78,19 @@ async def test_query_cpe_match(query_cpe_match, feed, pattern, expected):
     result.sort()
     expected.sort()
     assert result == expected
+
+
+@pytest.mark.asyncio
+async def test_get_feed_exceptions(get_feed):
+    with pytest.raises(hub.cpe_tag.errors.SearcherError):
+        feed_loc = f"/{uuid4()}/{uuid4()}/{uuid4()}"
+        _, quasi_cpe, _ = testdata[0]
+        await get_feed(feed_loc, quasi_cpe)
+    with pytest.raises(hub.cpe_tag.errors.SearcherError):
+        feed_loc = "/tmp"
+        quasi_cpe = "weird0"
+        await get_feed(feed_loc, quasi_cpe)
+    with pytest.raises(hub.cpe_tag.errors.SearcherError):
+        feed_loc = "/tmp"
+        quasi_cpe = "a:b:c;:d"
+        await get_feed(feed_loc, quasi_cpe)

@@ -6,13 +6,13 @@ def __init__(hub):
     HUB = hub
 
 
-class SerializerError(TypeError):
+class GeneratorError(TypeError):
     def __init__(self, msg):
         self.hub = HUB
         self.msg = msg
 
 
-class GeneratorError(TypeError):
+class SearcherError(AssertionError):
     def __init__(self, msg):
         self.hub = HUB
         self.msg = msg

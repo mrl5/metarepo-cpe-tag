@@ -4,6 +4,8 @@
 import pop.hub
 import pytest
 
+from jsonschema import ValidationError
+
 hub = pop.hub.Hub()
 hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
 
@@ -65,5 +67,5 @@ def test_serialize_version(serialize_version, funtoo_version, expected):
 
 @pytest.mark.parametrize("package", errordata)
 def test_serialize_package_json_exceptions(serialize_package_json, package):
-    with pytest.raises(hub.cpe_tag.errors.SerializerError):
+    with pytest.raises(ValidationError):
         serialize_package_json(package)

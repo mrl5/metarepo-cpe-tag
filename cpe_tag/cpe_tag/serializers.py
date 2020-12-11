@@ -45,18 +45,12 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
 
 
 def serialize_package_json(hub, package: dict) -> list:
-    try:
-        versions = package["versions"]
-        if not isinstance(versions, list):
-            raise hub.cpe_tag.errors.SerializerError("package in invalid format")
-
-        vendor, product = serialize_package_name(hub, package["name"])
-        for v in versions:
-            version, update = serialize_version(hub, str(v["version"]))
-            if version is not None:
-                v["quasi_cpe"] = hub.cpe_tag.generators.get_quasi_cpe(
-                    vendor=vendor, product=product, version=version, update=update
-                )
-        return package
-    except KeyError:
-        raise hub.cpe_tag.errors.SerializerError("package in invalid format")
+    versions = package["versions"]
+    vendor, product = serialize_package_name(hub, package["name"])
+    for v in versions:
+        version, update = serialize_version(hub, str(v["version"]))
+        if version is not None:
+            v["quasi_cpe"] = hub.cpe_tag.generators.get_quasi_cpe(
+                vendor=vendor, product=product, version=version, update=update
+            )
+    return package

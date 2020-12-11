@@ -16,13 +16,13 @@ def get_cpe_uri_from_json_line(json_line: str) -> str:
     return final
 
 
-def log_error(quasi_cpe, stderr):
+def log_error(quasi_cpe: str, stderr: bytes) -> None:
     err = stderr.decode("utf-8")
     if len(err) > 0:
         logging.error(f"[{quasi_cpe}] {err}")
 
 
-async def get_feed(feed_loc, quasi_cpe):
+async def get_feed(hub, feed_loc: str, quasi_cpe: str) -> str:
     proc = await asyncio.create_subprocess_shell(
         f"/bin/zcat {feed_loc} | /bin/grep {quasi_cpe}",
         stdout=asyncio.subprocess.PIPE,
@@ -36,11 +36,9 @@ async def get_feed(feed_loc, quasi_cpe):
 async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
 
-    if quasi_cpe is None:
-        return matches
-
     if feed is None:
-        feed = await get_feed(hub.OPT.cpe_tag.cpe_match_feed, quasi_cpe)
+        feed_loc = hub.OPT.cpe_tag.cpe_match_feed
+        feed = await get_feed(hub, feed_loc, quasi_cpe)
 
     pattern = convert_quasi_cpe_to_regex(quasi_cpe)
     for line in feed:
