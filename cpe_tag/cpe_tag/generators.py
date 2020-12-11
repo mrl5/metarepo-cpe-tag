@@ -26,8 +26,6 @@ def get_quasi_cpe(hub, **wfn_attrs) -> str:
         else ""
     )
 
-    if len(product) == 0 or len(version) == 0:
-        raise hub.cpe_tag.errors.GeneratorError("missing required params")
     parts = [vendor, product, version, update]
     return ":".join(parts)
 
