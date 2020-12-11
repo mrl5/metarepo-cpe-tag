@@ -46,9 +46,8 @@ async def tag_version(hub, v: dict, **kwargs) -> dict:
     elif v["quasi_cpe"] is None:
         del v["quasi_cpe"]
     else:
-        v["cpes"] = list(
-            set(await hub.cpe_tag.searchers.query_cpe_match(v["quasi_cpe"], **kwargs))
-        )
+        cpes = await hub.cpe_tag.searchers.query_cpe_match(v["quasi_cpe"], **kwargs)
+        v["cpes"] = list(set(cpes))
         v["cpes"].sort()
         del v["quasi_cpe"]
     return v
