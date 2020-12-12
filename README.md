@@ -28,6 +28,11 @@ source "${VENV_DIR}/bin/activate"
 pip install -e .
 ```
 4. Download CPE feed:
+Use existing script:
+```
+./bin/get_cpe_match_feed.py ~/feeds/json
+```
+or do it manually:
 ```
 mkdir -p ~/feeds/json && cd $_
   wget https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.gz &&
@@ -36,9 +41,10 @@ mkdir -p ~/feeds/json && cd $_
 5. See how it works:
 ```
 input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29.3"}, {"version": "1.30.1"}, {"version": "1.31.0"}, {"version": "9999"}]}'
+feed=~/feeds/json/nvdcpematch-1.0.json.gz
 
 export PYTHONPATH=./
-./bin/tag_package_with_cpes.py "$input"
+./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$input"
 ```
 
 ## I want to contribute/learn more technical details
