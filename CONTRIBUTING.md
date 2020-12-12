@@ -13,7 +13,7 @@ https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow
 ```
 pip install -e .[dev]
 ```
-3. then create your own branch (e.g. `issue-X` or `bugfix/issue-X`) - keep `STH`:
+3. then create your own branch (e.g. `issue-X` or `bugfix/issue-X`):
 ```
 git checkout -b issue-X
 ```
