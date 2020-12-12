@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from uuid import uuid4
 
 import pop.hub
 import pytest
@@ -78,19 +77,3 @@ async def test_query_cpe_match(query_cpe_match, feed, pattern, expected):
     result.sort()
     expected.sort()
     assert result == expected
-
-
-@pytest.mark.asyncio
-async def test_get_feed_exceptions(get_feed):
-    with pytest.raises(hub.cpe_tag.errors.SearcherError):
-        feed_loc = f"/{uuid4()}/{uuid4()}/{uuid4()}"
-        _, quasi_cpe, _ = testdata[0]
-        await get_feed(feed_loc, quasi_cpe)
-    with pytest.raises(hub.cpe_tag.errors.SearcherError):
-        feed_loc = "/tmp"
-        quasi_cpe = "weird0"
-        await get_feed(feed_loc, quasi_cpe)
-    with pytest.raises(hub.cpe_tag.errors.SearcherError):
-        feed_loc = "/tmp"
-        quasi_cpe = "a:b:c;:d"
-        await get_feed(feed_loc, quasi_cpe)

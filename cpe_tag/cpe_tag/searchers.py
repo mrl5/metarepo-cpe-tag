@@ -3,6 +3,7 @@
 import asyncio
 import logging
 from re import search, sub
+from shlex import quote
 
 from .generators import convert_quasi_cpe_to_regex
 
@@ -22,9 +23,11 @@ def log_error(quasi_cpe: str, stderr: bytes) -> None:
         logging.error(f"[{quasi_cpe}] {err}")
 
 
-async def get_feed(hub, feed_loc: str, quasi_cpe: str) -> str:
+async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
+    shell_escaped_path = quote(feed_loc)
+    shell_escaped_keyword = quote(quasi_cpe)
     proc = await asyncio.create_subprocess_shell(
-        f"/bin/zcat {feed_loc} | /bin/grep {quasi_cpe}",
+        f"/bin/zcat {shell_escaped_path} | /bin/grep {shell_escaped_keyword}",
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
@@ -38,7 +41,7 @@ async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
 
     if feed is None:
         feed_loc = hub.OPT.cpe_tag.cpe_match_feed
-        feed = await get_feed(hub, feed_loc, quasi_cpe)
+        feed = await get_feed(feed_loc, quasi_cpe)
 
     pattern = convert_quasi_cpe_to_regex(quasi_cpe)
     for line in feed:
