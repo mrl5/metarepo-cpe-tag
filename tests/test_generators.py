@@ -3,6 +3,7 @@
 
 import pop.hub
 import pytest
+from jsonschema import validate
 
 from cpe_tag.cpe_tag.generators import convert_quasi_cpe_to_regex
 
@@ -36,7 +37,7 @@ tag_package_testdata = [
     (
         mock_nvdcpematch,
         {
-            "product": "openssh",
+            "name": "openssh",
             "versions": [
                 {"version": "7.5-r1", "quasi_cpe": ":openssh:7.5:"},
                 {"version": "7.5_p1-r1", "quasi_cpe": ":openssh:7.5:p1"},
@@ -45,7 +46,7 @@ tag_package_testdata = [
             ],
         },
         {
-            "product": "openssh",
+            "name": "openssh",
             "versions": [
                 {
                     "version": "7.5-r1",
@@ -101,6 +102,8 @@ def test_convert_quasi_cpe_to_regex(quasi_cpe, expected, _):
 @pytest.mark.parametrize("feed, package, expected", tag_package_testdata)
 def test_tag_package_with_cpes(tag_package_with_cpes, package, expected, feed):
     result = tag_package_with_cpes(package, feed=feed)
-    assert result["product"] == expected["product"]
+    schema = hub.cpe_tag.utils.get_schema("tagged_package_json")
+    validate(instance=result, schema=schema)
+    assert result["name"] == expected["name"]
     for v in result["versions"]:
         assert any(list(map(lambda x: x == v, expected["versions"]))) is True

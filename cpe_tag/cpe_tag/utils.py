@@ -6,6 +6,7 @@ def get_schema(hub, schema: str) -> dict:
     schemas_subpath = "schemas"
     schemas = {
         "package_json": "package.schema.json",
+        "tagged_package_json": "tagged_package.schema.json",
     }
     schema_file = schemas[schema]
     file_path = Path(__file__).resolve()
