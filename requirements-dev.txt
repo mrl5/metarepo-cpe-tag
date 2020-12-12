@@ -1,3 +1,5 @@
-black >= 18
-flake8 >= 3.8
-isort >= 5.6
+black
+flake8
+isort
+pytest
+pytest-asyncio
