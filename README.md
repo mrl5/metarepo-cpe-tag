@@ -28,6 +28,7 @@ source "${VENV_DIR}/bin/activate"
 pip install -e .
 ```
 4. Download CPE feed:
+
 Use existing script:
 ```
 ./bin/get_cpe_match_feed.py ~/feeds/json
@@ -45,6 +46,11 @@ feed=~/feeds/json/nvdcpematch-1.0.json.gz
 
 export PYTHONPATH=./
 ./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$input"
+```
+
+6. Come back later and update CPE feed:
+```
+./bin/get_cpe_match_feed.py ~/feeds/json
 ```
 
 ## I want to contribute/learn more technical details
