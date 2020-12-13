@@ -52,9 +52,7 @@ async def tag_version(v: dict, query_function=None, **kwargs) -> dict:
 
 
 async def tag_versions(versions: list, **kwargs) -> list:
-    done_tasks, _ = await asyncio.wait(
-        [tag_version(v, **kwargs) for v in versions]
-    )
+    done_tasks, _ = await asyncio.wait([tag_version(v, **kwargs) for v in versions])
     return list(map(lambda x: x.result(), done_tasks))
 
 
@@ -63,6 +61,8 @@ def tag_package_with_cpes(hub, package: dict, query_function=None, **kwargs) -> 
         query_function = hub.cpe_tag.searchers.query_cpe_match
 
     versions = package["versions"]
-    versions = asyncio.run(tag_versions(versions, query_function=query_function, **kwargs))
+    versions = asyncio.run(
+        tag_versions(versions, query_function=query_function, **kwargs)
+    )
     package["versions"] = versions
     return package
