@@ -3,9 +3,8 @@
 
 import pop.hub
 import pytest
-from jsonschema import validate
-
 from cpe_tag.cpe_tag.generators import convert_quasi_cpe_to_regex
+from jsonschema import validate
 
 hub = pop.hub.Hub()
 hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
@@ -16,6 +15,9 @@ mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:*:*:*:*:*:*:*"\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*",\n',
     '      "cpe23Uri" : "cpe:2.3:a:openbsd:openssh:7.5:p1:*:*:*:*:*:*"\n',
+    '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:android:*:*",\n',
+    '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:linux:*:*",\n',
+    '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:*:*:*"\n',
 ]
 
 
@@ -23,14 +25,18 @@ quasi_cpe_testdata = [
     (
         {"product": "abc", "version": "1.2.3", "vendor": "foobar"},
         "foobar:abc:1.2.3:",
-        "foobar:abc:1.2.3:[\\*\\-]",
+        "foobar:abc:1.2.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
     ),
     (
         {"product": "def", "version": "1.2.3", "update": "p2"},
         ":def:1.2.3:p2",
-        ":def:1.2.3:(p2|[\\*])",
+        ":def:1.2.3:(p2|[\\*]):[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
     ),
-    ({"product": "ghi+", "version": "1337"}, ":ghi+:1337:", ":ghi\\+:1337:[\\*\\-]"),
+    (
+        {"product": "ghi+", "version": "1337"},
+        ":ghi+:1337:",
+        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+    ),
 ]
 
 tag_package_testdata = [
@@ -64,6 +70,27 @@ tag_package_testdata = [
                 },
                 {"version": "9999"},
                 {"version": "9999"},
+            ],
+        },
+    ),
+    (
+        mock_nvdcpematch,
+        {
+            "name": "firefox-bin",
+            "versions": [
+                {"version": "83.0", "quasi_cpe": ":firefox:83.0:"},
+            ],
+        },
+        {
+            "name": "firefox-bin",
+            "versions": [
+                {
+                    "version": "83.0",
+                    "cpes": [
+                        "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:*:*:*",
+                        "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:linux:*:*",
+                    ],
+                },
             ],
         },
     ),

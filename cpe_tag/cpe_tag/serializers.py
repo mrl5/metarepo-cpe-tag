@@ -8,7 +8,7 @@ VersionAndUpdate = Tuple[Optional[str], Optional[str]]
 
 
 def serialize_package_name(hub, funtoo_package: str) -> VendorAndProduct:
-    known_vendors = ["google"]
+    known_vendors = ["google", "oracle"]
 
     try:
         vendor, product = match(
