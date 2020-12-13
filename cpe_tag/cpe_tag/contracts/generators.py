@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-def sig_tag_package_with_cpes(hub, package: dict, **kwargs):
+def sig_tag_package_with_cpes(hub, package: dict, query_function=None, **kwargs):
     pass
 
 
