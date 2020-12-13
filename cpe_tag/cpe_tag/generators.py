@@ -34,7 +34,24 @@ def convert_quasi_cpe_to_regex(quasi_cpe: str) -> str:
     input_with_escaped_special_regex_chars = sub(r"[+]", "\\+", quasi_cpe)
     vendor, product, version, update = input_with_escaped_special_regex_chars.split(":")
     update = "[\\*\\-]" if len(update) == 0 else f"({update}|[\\*])"
-    parts = [vendor, product, version, update]
+    edition = "[^:]+"
+    language = "[^:]+"
+    swedition = "[^:]+"
+    targetsw = "(\\*|linux)"
+    targethw = "[^:]+"
+    other = "[^:]+"
+    parts = [
+        vendor,
+        product,
+        version,
+        update,
+        edition,
+        language,
+        swedition,
+        targetsw,
+        targethw,
+        other,
+    ]
     return ":".join(parts)
 
 
