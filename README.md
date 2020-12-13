@@ -53,6 +53,23 @@ export PYTHONPATH=./
 ./bin/get_cpe_match_feed.py ~/feeds/json
 ```
 
+## Tag installed packages on Funtoo system
+```
+regex='(.+)-([0-9]+.*)(\.ebuild)'
+base=/var/db/pkg
+parallel_jobs=8
+N=$parallel_jobs
+
+for category in `ls ${base}`; do
+    for package in `ls ${base}/${category}/`; do
+        ebuild=`ls ${base}/${category}/$package | grep '.ebuild'`
+        [[ $ebuild =~ $regex ]]
+        echo "{\"name\":\"${BASH_REMATCH[1]}\",\"versions\":[{\"version\":\"${BASH_REMATCH[2]}\"}]}"
+    done | parallel -j${N} "xargs -0 -d '\n' ./bin/tag_package_with_cpes.py "
+done
+```
+
+
 ## I want to contribute/learn more technical details
 Check out [CONTRIBUTING](CONTRIBUTING.md)
 
