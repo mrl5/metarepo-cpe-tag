@@ -3,7 +3,6 @@
 
 import pop.hub
 import pytest
-from cpe_tag.cpe_tag.generators import convert_quasi_cpe_to_regex
 from jsonschema import validate
 
 hub = pop.hub.Hub()
@@ -24,18 +23,18 @@ mock_nvdcpematch = [
 quasi_cpe_testdata = [
     (
         {"product": "abc", "version": "1.2.3", "vendor": "foobar"},
-        "foobar:abc:1.2.3:",
-        "foobar:abc:1.2.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        "foobar:abc:1.2.3:::::linux::",
+        "foobar:abc:1\.2\.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
     (
         {"product": "def", "version": "1.2.3", "update": "p2"},
-        ":def:1.2.3:p2",
-        ":def:1.2.3:(p2|[\\*]):[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        ":def:1.2.3:p2::::linux::",
+        ":def:1\.2\.3:(p2|\\*):[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
     (
         {"product": "ghi+", "version": "1337"},
-        ":ghi+:1337:",
-        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        ":ghi+:1337:::::linux::",
+        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
 ]
 
@@ -45,8 +44,8 @@ tag_package_testdata = [
         {
             "name": "openssh",
             "versions": [
-                {"version": "7.5-r1", "quasi_cpe": ":openssh:7.5:"},
-                {"version": "7.5_p1-r1", "quasi_cpe": ":openssh:7.5:p1"},
+                {"version": "7.5-r1", "quasi_cpe": ":openssh:7.5:::::::"},
+                {"version": "7.5_p1-r1", "quasi_cpe": ":openssh:7.5:p1::::::"},
                 {"version": "9999", "quasi_cpe": None},
                 {"version": "9999"},
             ],
@@ -78,7 +77,7 @@ tag_package_testdata = [
         {
             "name": "firefox-bin",
             "versions": [
-                {"version": "83.0", "quasi_cpe": ":firefox:83.0:"},
+                {"version": "83.0", "quasi_cpe": ":firefox:83.0:::::linux::"},
             ],
         },
         {
@@ -103,6 +102,11 @@ def get_quasi_cpe():
 
 
 @pytest.fixture(scope="function")
+def convert_quasi_cpe_to_regex():
+    return hub.cpe_tag.generators.convert_quasi_cpe_to_regex
+
+
+@pytest.fixture(scope="function")
 def tag_package_with_cpes():
     return hub.cpe_tag.generators.tag_package_with_cpes
 
@@ -122,7 +126,7 @@ def test_get_quasi_cpe(get_quasi_cpe, params, expected, _):
 
 
 @pytest.mark.parametrize("_, quasi_cpe, expected", quasi_cpe_testdata)
-def test_convert_quasi_cpe_to_regex(quasi_cpe, expected, _):
+def test_convert_quasi_cpe_to_regex(convert_quasi_cpe_to_regex, quasi_cpe, expected, _):
     assert convert_quasi_cpe_to_regex(quasi_cpe) == expected
 
 
