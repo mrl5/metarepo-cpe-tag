@@ -5,8 +5,6 @@ import logging
 from re import search, sub
 from shlex import quote
 
-from .generators import convert_quasi_cpe_to_regex
-
 
 def get_cpe_uri_from_json_line(json_line: str) -> str:
     no_key = ":".join(json_line.split(":")[1:])
@@ -39,7 +37,7 @@ async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
 async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
 
-    pattern = convert_quasi_cpe_to_regex(quasi_cpe)
+    pattern = hub.cpe_tag.generators.convert_quasi_cpe_to_regex(quasi_cpe)
 
     if feed is None:
         feed_loc = hub.OPT.cpe_tag.cpe_match_feed

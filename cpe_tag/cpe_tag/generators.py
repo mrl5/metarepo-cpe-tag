@@ -71,7 +71,7 @@ def get_quasi_cpe(hub, **wfn_attrs) -> str:
     return ":".join(parts)
 
 
-def convert_quasi_cpe_to_regex(quasi_cpe: str) -> str:
+def convert_quasi_cpe_to_regex(hub, quasi_cpe: str) -> str:
     escaped = escape(quasi_cpe)
     (
         vendor,
