@@ -24,18 +24,18 @@ mock_nvdcpematch = [
 quasi_cpe_testdata = [
     (
         {"product": "abc", "version": "1.2.3", "vendor": "foobar"},
-        "foobar:abc:1.2.3:",
-        "foobar:abc:1.2.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        "foobar:abc:1.2.3:::::linux::",
+        "foobar:abc:1\.2\.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
     (
         {"product": "def", "version": "1.2.3", "update": "p2"},
-        ":def:1.2.3:p2",
-        ":def:1.2.3:(p2|[\\*]):[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        ":def:1.2.3:p2::::linux::",
+        ":def:1\.2\.3:(p2|\\*):[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
     (
         {"product": "ghi+", "version": "1337"},
-        ":ghi+:1337:",
-        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(\\*|linux):[^:]+:[^:]+",
+        ":ghi+:1337:::::linux::",
+        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
 ]
 
@@ -45,8 +45,8 @@ tag_package_testdata = [
         {
             "name": "openssh",
             "versions": [
-                {"version": "7.5-r1", "quasi_cpe": ":openssh:7.5:"},
-                {"version": "7.5_p1-r1", "quasi_cpe": ":openssh:7.5:p1"},
+                {"version": "7.5-r1", "quasi_cpe": ":openssh:7.5:::::::"},
+                {"version": "7.5_p1-r1", "quasi_cpe": ":openssh:7.5:p1::::::"},
                 {"version": "9999", "quasi_cpe": None},
                 {"version": "9999"},
             ],
@@ -78,7 +78,7 @@ tag_package_testdata = [
         {
             "name": "firefox-bin",
             "versions": [
-                {"version": "83.0", "quasi_cpe": ":firefox:83.0:"},
+                {"version": "83.0", "quasi_cpe": ":firefox:83.0:::::linux::"},
             ],
         },
         {

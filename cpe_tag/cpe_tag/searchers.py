@@ -27,7 +27,7 @@ async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
     shell_escaped_path = quote(feed_loc)
     shell_escaped_keyword = quote(quasi_cpe)
     proc = await asyncio.create_subprocess_shell(
-        f"/bin/zcat {shell_escaped_path} | /bin/grep {shell_escaped_keyword}",
+        f"/bin/zcat {shell_escaped_path} | /bin/grep -E {shell_escaped_keyword}",
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
@@ -39,11 +39,12 @@ async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
 async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
 
+    pattern = convert_quasi_cpe_to_regex(quasi_cpe)
+
     if feed is None:
         feed_loc = hub.OPT.cpe_tag.cpe_match_feed
-        feed = await get_feed(feed_loc, quasi_cpe)
+        feed = await get_feed(feed_loc, pattern)
 
-    pattern = convert_quasi_cpe_to_regex(quasi_cpe)
     for line in feed:
         s = search(pattern, line)
         if s is not None:

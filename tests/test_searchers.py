@@ -22,12 +22,12 @@ mock_nvdcpematch = [
 testdata = [
     (
         mock_nvdcpematch,
-        "google:chrome:80.0.3987.87:",
+        "google:chrome:80.0.3987.87:::::::",
         ["cpe:2.3:a:google:chrome:80.0.3987.87:*:*:*:*:*:*:*"],
     ),
     (
         mock_nvdcpematch,
-        ":openssh:7.5:",
+        ":openssh:7.5:::::::",
         [
             "cpe:2.3:a:openbsd:openssh:7.5:*:*:*:*:*:*:*",
             "cpe:2.3:a:openbsd:openssh:7.5:-:*:*:*:*:*:*",
@@ -35,7 +35,7 @@ testdata = [
     ),
     (
         mock_nvdcpematch,
-        ":openssh:7.5:p1",
+        ":openssh:7.5:p1::::::",
         [
             "cpe:2.3:a:openbsd:openssh:7.5:*:*:*:*:*:*:*",
             "cpe:2.3:a:openbsd:openssh:7.5:p1:*:*:*:*:*:*",
@@ -43,7 +43,7 @@ testdata = [
     ),
     (
         mock_nvdcpematch,
-        ":nicotine+:13.37:",
+        ":nicotine+:13.37:::::::",
         ["cpe:2.3:a:test:nicotine+:13.37:-:*:*:*:*:*:*"],
     ),
     (
