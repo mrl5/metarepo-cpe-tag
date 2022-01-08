@@ -13,21 +13,26 @@ repo.
 
 
 ## Getting started
-1. Create python3 virtualenv:
+1. Clone this repo
+```
+git clone https://github.com/mrl5/metarepo-cpe-tag/
+cd metarepo-cpe-tag/
+```
+2. Create python3 virtualenv:
 ```
 VENV_DIR="$HOME/.my_virtualenvs/metarepo_cpe_tag"
 mkdir -p "${VENV_DIR}"
 python3 -m venv "${VENV_DIR}"
 ```
-2. Switch to new virtualenv:
+3. Switch to new virtualenv:
 ```
 source "${VENV_DIR}/bin/activate"
 ```
-3. Install requirements:
+4. Install requirements:
 ```
 pip install -e .
 ```
-4. Download CPE feed:
+5. Download CPE feed:
 
 Use existing script:
 ```
@@ -39,7 +44,7 @@ mkdir -p ~/feeds/json && cd $_
   wget https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.gz &&
   cd -
 ```
-5. See how it works:
+6. See how it works:
 ```
 input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29.3"}, {"version": "1.30.1"}, {"version": "1.31.0"}, {"version": "9999"}]}'
 feed=~/feeds/json/nvdcpematch-1.0.json.gz
@@ -48,7 +53,7 @@ export PYTHONPATH=./
 ./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$input"
 ```
 
-6. Come back later and update CPE feed:
+7. Come back later and update CPE feed:
 ```
 ./bin/get_cpe_match_feed.py ~/feeds/json
 ```
