@@ -36,8 +36,21 @@ async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
 
 async def query_cpe_match(hub, quasi_cpe: str, feed=None) -> list:
     matches = []
-
     pattern = hub.cpe_tag.generators.convert_quasi_cpe_to_regex(quasi_cpe)
+
+    if feed is None:
+        feed_loc = hub.OPT.cpe_tag.cpe_match_feed
+        feed = await get_feed(feed_loc, pattern)
+
+    for line in feed:
+        s = search(pattern, line)
+        if s is not None:
+            matches.append(get_cpe_uri_from_json_line(s.string))
+    return list(set(matches))
+
+
+async def query_multi_cpe_match(hub, pattern: str, feed=None) -> list:
+    matches = []
 
     if feed is None:
         feed_loc = hub.OPT.cpe_tag.cpe_match_feed

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
-from re import sub, escape
+from re import escape, sub
 
 
 def get_quasi_cpe(hub, **wfn_attrs) -> str:
@@ -135,3 +135,19 @@ def tag_package_with_cpes(hub, package: dict, query_function=None, **kwargs) -> 
     )
     package["versions"] = versions
     return package
+
+
+def tag_packages_with_cpes(hub, packages: list, query_function=None, **kwargs) -> list:
+    if query_function is None:
+        query_function = hub.cpe_tag.searchers.query_multi_cpe_match
+
+    quasi_cpes = []
+    for package in packages:
+        for x in package["versions"]:
+            item = x.get("quasi_cpe")
+            if item is not None:
+                quasi_cpes.append(item)
+    patterns = list(map(lambda x: convert_quasi_cpe_to_regex(hub, x), quasi_cpes))
+    pattern = "|".join(patterns)
+    cpes = asyncio.run(query_function(pattern, **kwargs))
+    return cpes
