@@ -25,7 +25,7 @@ async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
     shell_escaped_path = quote(feed_loc)
     shell_escaped_keyword = quote(quasi_cpe)
     proc = await asyncio.create_subprocess_shell(
-        f"/bin/zcat {shell_escaped_path} | /bin/grep -E {shell_escaped_keyword}",
+        f"/usr/bin/zgrep -E {shell_escaped_keyword} {shell_escaped_path}",
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
