@@ -19,13 +19,28 @@ def throw_on_invalid_feed(feed_loc):
 
 
 def run():
-    package = json.loads(hub.OPT.cpe_tag.package_json)
+    target = json.loads(hub.OPT.cpe_tag.package_json)
     throw_on_invalid_feed(hub.OPT.cpe_tag.cpe_match_feed)
+    tagged = handle_multi(target) if isinstance(target, list) else handle_single(target)
+    print(json.dumps(tagged))
+
+
+def handle_single(package):
     serialized = hub.cpe_tag.serializers.serialize_package_json(package)
     tagged = hub.cpe_tag.generators.tag_package_with_cpes(
         serialized, query_function=hub.cpe_tag.searchers.query_cpe_match
     )
-    print(json.dumps(tagged))
+    return tagged
+
+
+def handle_multi(packages):
+    serialized = [
+        hub.cpe_tag.serializers.serialize_package_json(package) for package in packages
+    ]
+    tagged = hub.cpe_tag.generators.tag_packages_with_cpes(
+        serialized, query_function=hub.cpe_tag.searchers.query_multi_cpe_match
+    )
+    return tagged
 
 
 if __name__ == "__main__":
