@@ -21,7 +21,7 @@ def log_error(quasi_cpe: str, stderr: bytes) -> None:
         logging.error(f"[{quasi_cpe}] {err}")
 
 
-async def get_feed(feed_loc: str, quasi_cpe: str) -> str:
+async def get_feed(feed_loc: str, quasi_cpe: str) -> list:
     shell_escaped_path = quote(feed_loc)
     shell_escaped_keyword = quote(quasi_cpe)
     proc = await asyncio.create_subprocess_shell(

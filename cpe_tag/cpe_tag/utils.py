@@ -12,5 +12,5 @@ def get_schema(hub, schema: str) -> dict:
     file_path = Path(__file__).resolve()
     schema_path = file_path.parent.joinpath(schemas_subpath).joinpath(schema_file)
     with open(schema_path) as f:
-        schema = json.load(f)
-    return schema
+        jschema = json.load(f)
+    return jschema

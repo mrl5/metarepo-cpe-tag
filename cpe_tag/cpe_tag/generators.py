@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import asyncio
-from re import escape, sub
+from re import escape
 
 
 def get_quasi_cpe(hub, **wfn_attrs) -> str:

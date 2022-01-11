@@ -10,22 +10,23 @@ VersionAndUpdate = Tuple[Optional[str], Optional[str]]
 def serialize_package_name(hub, funtoo_package: str) -> VendorAndProduct:
     known_vendors = ["google", "oracle"]
 
-    try:
-        vendor, product = match(
-            rf"^({'|'.join(known_vendors)})(.+)", funtoo_package
-        ).groups()
-        product = sub(r"^-", "", product)
-    except AttributeError:
+    result = match(rf"^({'|'.join(known_vendors)})(.+)", funtoo_package)
+
+    if result is None:
         vendor = None
         product = funtoo_package
+    else:
+        vendor, product = result.groups()
+        product = sub(r"^-", "", product)
 
     product = sub(r"-bin$", "", product)
-    return tuple([vendor, product])
+    return vendor, product
 
 
-def strip_revision(x: str) -> Optional[str]:
+def strip_revision(x: Optional[str]) -> Optional[str]:
     if x is not None:
         return sub(r"-r[0-9]{1}$", "", x)
+    return None
 
 
 def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
@@ -33,7 +34,7 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
         str(funtoo_version) if funtoo_version is not None else funtoo_version
     )
     if funtoo_version == "0" or funtoo_version == "9999":
-        return tuple([None, None])
+        return None, None
 
     try:
         version, update = funtoo_version.split("_")
@@ -41,10 +42,10 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
         version = funtoo_version
         update = None
 
-    return tuple([strip_revision(version), strip_revision(update)])
+    return strip_revision(version), strip_revision(update)
 
 
-def serialize_package_json(hub, package: dict) -> list:
+def serialize_package_json(hub, package: dict) -> dict:
     versions = package["versions"]
     vendor, product = serialize_package_name(hub, package["name"])
     for v in versions:
