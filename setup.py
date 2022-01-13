@@ -71,7 +71,7 @@ setup(
     python_requires=">=3.7",
     classifiers=[
         "Operating System :: POSIX :: Linux",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
