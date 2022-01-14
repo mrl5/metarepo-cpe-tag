@@ -1,3 +1,0 @@
-pop
-jsonschema
-requests

@@ -1,7 +1,10 @@
 __pycache__/
 *.swp
+tags
 build/
 dist/
 *.egg-info/
 *.log
 dump/
+.mypy_cache/
+.coverage

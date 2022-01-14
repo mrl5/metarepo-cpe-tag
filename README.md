@@ -13,39 +13,46 @@ repo.
 
 
 ## Getting started
+
 1. Clone this repo
-```
+```bash
 git clone https://github.com/mrl5/metarepo-cpe-tag/
 cd metarepo-cpe-tag/
 ```
-2. Create python3 virtualenv:
-```
-VENV_DIR="$HOME/.my_virtualenvs/metarepo_cpe_tag"
-mkdir -p "${VENV_DIR}"
-python3 -m venv "${VENV_DIR}"
-```
-3. Switch to new virtualenv:
-```
-source "${VENV_DIR}/bin/activate"
-```
-4. Install requirements:
-```
-pip install -e .
-```
-5. Download CPE feed:
 
-Use existing script:
+2. Install dependencies:
+
+On funtoo:
+```bash
+emerge dev-python/click dev-python/requests dev-python/jsonschema
 ```
+or using `pip`
+```bash
+# optional but recommended - use poetry or at least run in venv
+pip install .[cli]
+```
+or [install
+poetry](https://python-poetry.org/docs/master/#installing-with-the-official-installer)
+and:
+```bash
+poetry shell
+poetry install --no-dev --extras cli
+```
+
+3. Download CPE feed:
+Use existing script:
+```bash
 ./bin/get_cpe_match_feed.py ~/feeds/json
 ```
 or do it manually:
-```
+```bash
 mkdir -p ~/feeds/json && cd $_
   wget https://nvd.nist.gov/feeds/json/cpematch/1.0/nvdcpematch-1.0.json.gz &&
   cd -
 ```
-6. See how it works:
-```
+
+4. See how it works:
+```bash
 input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29.3"}, {"version": "1.30.1"}, {"version": "1.31.0"}, {"version": "9999"}]}'
 feed=~/feeds/json/nvdcpematch-1.0.json.gz
 
@@ -53,13 +60,13 @@ export PYTHONPATH=./
 ./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$input"
 ```
 
-7. Come back later and update CPE feed:
-```
+5. Come back later and update CPE feed:
+```bash
 ./bin/get_cpe_match_feed.py ~/feeds/json
 ```
 
 ## get CVEs on Funtoo system (ego plugin bash PoC)
-```
+```bash
 emerge app-misc/jq
 
 ./bin/get_cves_on_system.sh

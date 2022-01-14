@@ -1,13 +1,8 @@
-#!/usr/bin/env python3
-
-
-import pop.hub
 import pytest
 from jsonschema import validate
 
-hub = pop.hub.Hub()
-hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
-
+from cpe_tag.generators import tag_package_with_cpes
+from cpe_tag.utils import get_schema
 
 mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:google:chrome:80.0.3976.1:*:*:*:*:*:*:*"\n',
@@ -17,25 +12,6 @@ mock_nvdcpematch = [
     '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:android:*:*",\n',
     '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:linux:*:*",\n',
     '      "cpe23Uri" : "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:*:*:*"\n',
-]
-
-
-quasi_cpe_testdata = [
-    (
-        {"product": "abc", "version": "1.2.3", "vendor": "foobar"},
-        "foobar:abc:1.2.3:::::linux::",
-        "foobar:abc:1\\.2\\.3:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
-    ),
-    (
-        {"product": "def", "version": "1.2.3", "update": "p2"},
-        ":def:1.2.3:p2::::linux::",
-        ":def:1\\.2\\.3:(p2|\\*):[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
-    ),
-    (
-        {"product": "ghi+", "version": "1337"},
-        ":ghi+:1337:::::linux::",
-        ":ghi\\+:1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
-    ),
 ]
 
 tag_package_testdata = [
@@ -76,9 +52,7 @@ tag_package_testdata = [
         mock_nvdcpematch,
         {
             "name": "firefox-bin",
-            "versions": [
-                {"version": "83.0", "quasi_cpe": ":firefox:83.0:::::linux::"},
-            ],
+            "versions": [{"version": "83.0", "quasi_cpe": ":firefox:83.0:::::linux::"}],
         },
         {
             "name": "firefox-bin",
@@ -89,51 +63,17 @@ tag_package_testdata = [
                         "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:*:*:*",
                         "cpe:2.3:a:mozilla:firefox:83.0:*:*:*:*:linux:*:*",
                     ],
-                },
+                }
             ],
         },
     ),
 ]
 
 
-@pytest.fixture(scope="function")
-def get_quasi_cpe():
-    return hub.cpe_tag.generators.get_quasi_cpe
-
-
-@pytest.fixture(scope="function")
-def convert_quasi_cpe_to_regex():
-    return hub.cpe_tag.generators.convert_quasi_cpe_to_regex
-
-
-@pytest.fixture(scope="function")
-def tag_package_with_cpes():
-    return hub.cpe_tag.generators.tag_package_with_cpes
-
-
-def test_get_quasi_cpe_exceptions(get_quasi_cpe):
-    with pytest.raises(hub.cpe_tag.errors.GeneratorError):
-        get_quasi_cpe(wtf=1)
-    with pytest.raises(hub.cpe_tag.errors.GeneratorError):
-        get_quasi_cpe(product="a")
-    with pytest.raises(hub.cpe_tag.errors.GeneratorError):
-        get_quasi_cpe(version="1.2.3")
-
-
-@pytest.mark.parametrize("params, expected, _", quasi_cpe_testdata)
-def test_get_quasi_cpe(get_quasi_cpe, params, expected, _):
-    assert get_quasi_cpe(**params) == expected
-
-
-@pytest.mark.parametrize("_, quasi_cpe, expected", quasi_cpe_testdata)
-def test_convert_quasi_cpe_to_regex(convert_quasi_cpe_to_regex, quasi_cpe, expected, _):
-    assert convert_quasi_cpe_to_regex(quasi_cpe) == expected
-
-
 @pytest.mark.parametrize("feed, package, expected", tag_package_testdata)
-def test_tag_package_with_cpes(tag_package_with_cpes, package, expected, feed):
+def test_tag_package_with_cpes(package, expected, feed):
     result = tag_package_with_cpes(package, feed=feed)
-    schema = hub.cpe_tag.utils.get_schema("tagged_package_json")
+    schema = get_schema("tagged_package_json")
     validate(instance=result, schema=schema)
     assert result["name"] == expected["name"]
     for v in result["versions"]:

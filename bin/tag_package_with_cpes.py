@@ -4,11 +4,12 @@
 import json
 from pathlib import Path
 
-import pop.hub
+import click
 
-hub = pop.hub.Hub()
-hub.pop.sub.add(dyne_name="cpe_tag")
-hub.cpe_tag.init.cli()
+from cpe_tag import conf
+from cpe_tag.generators import tag_package_with_cpes, tag_packages_with_cpes
+from cpe_tag.searchers import query_cpe_match, query_multi_cpe_match
+from cpe_tag.serializers import serialize_package_json
 
 
 def throw_on_invalid_feed(feed_loc):
@@ -18,28 +19,29 @@ def throw_on_invalid_feed(feed_loc):
         raise OSError(f"{feed_loc}: no such file")
 
 
-def run():
-    target = json.loads(hub.OPT.cpe_tag.package_json)
-    throw_on_invalid_feed(hub.OPT.cpe_tag.cpe_match_feed)
+@click.command()
+@click.option(
+    "--cpe-match-feed",
+    default=conf.DEFAULT_FEED_PATH,
+    help="Path to NVD CPE Match Feed archive (json.gz)",
+)
+@click.argument("package_json")
+def run(cpe_match_feed, package_json):
+    target = json.loads(package_json)
+    throw_on_invalid_feed(cpe_match_feed)
     tagged = handle_multi(target) if isinstance(target, list) else handle_single(target)
     print(json.dumps(tagged))
 
 
 def handle_single(package):
-    serialized = hub.cpe_tag.serializers.serialize_package_json(package)
-    tagged = hub.cpe_tag.generators.tag_package_with_cpes(
-        serialized, query_function=hub.cpe_tag.searchers.query_cpe_match
-    )
+    serialized = serialize_package_json(package)
+    tagged = tag_package_with_cpes(serialized, query_function=query_cpe_match)
     return tagged
 
 
 def handle_multi(packages):
-    serialized = [
-        hub.cpe_tag.serializers.serialize_package_json(package) for package in packages
-    ]
-    tagged = hub.cpe_tag.generators.tag_packages_with_cpes(
-        serialized, query_function=hub.cpe_tag.searchers.query_multi_cpe_match
-    )
+    serialized = [serialize_package_json(package) for package in packages]
+    tagged = tag_packages_with_cpes(serialized, query_function=query_multi_cpe_match)
     return tagged
 
 

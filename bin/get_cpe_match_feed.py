@@ -8,7 +8,7 @@ from sys import argv, exit, stdout
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from requests import get
+from requests import get  # type: ignore
 
 FILENAME = argv[0]
 CPE_MATCH_URL = "https://nvd.nist.gov/feeds/json/cpematch/1.0"
