@@ -4,7 +4,7 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from re import match, sub
-from typing import Optional, Tuple
+from typing import Tuple
 
 from jsonschema import validate
 

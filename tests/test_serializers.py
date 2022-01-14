@@ -29,7 +29,7 @@ testversions = [
 ]
 
 errordata = (
-    {},
+    {},  # type: ignore
     {"name": "a"},
     {"versions": []},
     {"name": "a", "versions": 123},
