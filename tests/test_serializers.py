@@ -8,24 +8,24 @@ from cpe_tag.serializers import (
 )
 
 testnames = [
-    ("a", tuple([None, "a"])),
-    ("a-bin", tuple([None, "a"])),
-    ("a-b", tuple([None, "a-b"])),
-    ("a-b-bin", tuple([None, "a-b"])),
+    ("a", tuple(["", "a"])),
+    ("a-bin", tuple(["", "a"])),
+    ("a-b", tuple(["", "a-b"])),
+    ("a-b-bin", tuple(["", "a-b"])),
     ("google-a", tuple(["google", "a"])),
     ("google-a-bin", tuple(["google", "a"])),
-    ("nicotine+", tuple([None, "nicotine+"])),
+    ("nicotine+", tuple(["", "nicotine+"])),
 ]
 
 testversions = [
-    ("1.2", tuple(["1.2", None])),
-    ("1.2-r1", tuple(["1.2", None])),
+    ("1.2", tuple(["1.2", ""])),
+    ("1.2-r1", tuple(["1.2", ""])),
     ("1.3_p1", tuple(["1.3", "p1"])),
     ("1.3_p1-r1", tuple(["1.3", "p1"])),
-    ("9999", tuple([None, None])),
-    (9999, tuple([None, None])),
-    ("0", tuple([None, None])),
-    (0, tuple([None, None])),
+    ("9999", tuple(["", ""])),
+    (9999, tuple(["", ""])),
+    ("0", tuple(["", ""])),
+    (0, tuple(["", ""])),
 ]
 
 errordata = (
