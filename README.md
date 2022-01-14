@@ -69,6 +69,7 @@ export PYTHONPATH=./
 ```bash
 emerge app-misc/jq
 
+export PYTHONPATH=./
 ./bin/get_cves_on_system.sh
 
 ls -l dump/
