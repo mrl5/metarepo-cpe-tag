@@ -3,8 +3,7 @@
 regex='(.+)-([0-9]+.*)(\.ebuild)'
 base=/var/db/pkg
 parallel_jobs=8
-dump_dir=dump
-
+dump_dir=dump_$(date -uIseconds)
 
 mkdir -p ${dump_dir}
 for category in `ls ${base}`; do
@@ -34,7 +33,6 @@ for cpe in `cat ${dump_dir}/*cpes*`; do
     pkg=`echo $cpe | cut -d':' -f4-8 | sed 's/\*//g' | sed 's/:-:/::/g' | sed 's/::$//g' | sed 's/:$//g'`
     cves_file="${pkg}.cves.json"
     echo "collecting CVEs for $pkg ..."
-    rm -f ${dump_dir}/${cves_file}
     curl -s https://services.nvd.nist.gov/rest/json/cves/1.0?cpeMatchString="$cpe" |
         jq -c ".result.CVE_Items[] | {id: .cve.CVE_data_meta.ID, impact: .impact}" >> ${dump_dir}/${cves_file}
 done
