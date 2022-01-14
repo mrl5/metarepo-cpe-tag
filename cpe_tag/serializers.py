@@ -6,11 +6,16 @@
 from re import match, sub
 from typing import Optional, Tuple
 
+from jsonschema import validate
+
+from cpe_tag.cpe import get_quasi_cpe
+from cpe_tag.utils import get_schema
+
 VendorAndProduct = Tuple[Optional[str], str]
 VersionAndUpdate = Tuple[Optional[str], Optional[str]]
 
 
-def serialize_package_name(hub, funtoo_package: str) -> VendorAndProduct:
+def serialize_package_name(funtoo_package: str) -> VendorAndProduct:
     known_vendors = ["google", "oracle"]
 
     result = match(rf"^({'|'.join(known_vendors)})(.+)", funtoo_package)
@@ -32,7 +37,7 @@ def strip_revision(x: Optional[str]) -> Optional[str]:
     return None
 
 
-def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
+def serialize_version(funtoo_version: str) -> VersionAndUpdate:
     funtoo_version = (
         str(funtoo_version) if funtoo_version is not None else funtoo_version
     )
@@ -48,13 +53,20 @@ def serialize_version(hub, funtoo_version: str) -> VersionAndUpdate:
     return strip_revision(version), strip_revision(update)
 
 
-def serialize_package_json(hub, package: dict) -> dict:
+def serialize_package_json(package: dict) -> dict:
+    throw_on_invalid_package(package)
+
     versions = package["versions"]
-    vendor, product = serialize_package_name(hub, package["name"])
+    vendor, product = serialize_package_name(package["name"])
     for v in versions:
-        version, update = serialize_version(hub, str(v["version"]))
+        version, update = serialize_version(str(v["version"]))
         if version is not None:
-            v["quasi_cpe"] = hub.cpe_tag.generators.get_quasi_cpe(
+            v["quasi_cpe"] = get_quasi_cpe(
                 vendor=vendor, product=product, version=version, update=update
             )
     return package
+
+
+def throw_on_invalid_package(package: dict):
+    package_json_schema = get_schema("package_json")
+    validate(instance=package, schema=package_json_schema)

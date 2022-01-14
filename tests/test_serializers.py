@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
-
-
-import pop.hub
 import pytest
-
 from jsonschema import ValidationError
 
-hub = pop.hub.Hub()
-hub.pop.sub.add(dyne_name="cpe_tag", omit_class=False)
-
+from cpe_tag.serializers import (
+    serialize_package_json,
+    serialize_package_name,
+    serialize_version,
+)
 
 testnames = [
     ("a", tuple([None, "a"])),
@@ -40,32 +37,17 @@ errordata = (
 )
 
 
-@pytest.fixture(scope="function")
-def serialize_package_json():
-    return hub.cpe_tag.serializers.serialize_package_json
-
-
-@pytest.fixture(scope="function")
-def serialize_package_name():
-    return hub.cpe_tag.serializers.serialize_package_name
-
-
-@pytest.fixture(scope="function")
-def serialize_version():
-    return hub.cpe_tag.serializers.serialize_version
-
-
 @pytest.mark.parametrize("name, expected", testnames)
-def test_serialize_package_name(serialize_package_name, name, expected):
+def test_serialize_package_name(name, expected):
     assert serialize_package_name(name) == expected
 
 
 @pytest.mark.parametrize("funtoo_version, expected", testversions)
-def test_serialize_version(serialize_version, funtoo_version, expected):
+def test_serialize_version(funtoo_version, expected):
     assert serialize_version(funtoo_version) == expected
 
 
 @pytest.mark.parametrize("package", errordata)
-def test_serialize_package_json_exceptions(serialize_package_json, package):
+def test_serialize_package_json_exceptions(package):
     with pytest.raises(ValidationError):
         serialize_package_json(package)

@@ -4,18 +4,16 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
-def __init__(hub):
-    global HUB
-    HUB = hub
-
-
-class GeneratorError(TypeError):
+class CpeTagError(Exception):
     def __init__(self, msg):
-        self.hub = HUB
         self.msg = msg
 
 
-class SearcherError(AssertionError):
+class GeneratorError(CpeTagError):
     def __init__(self, msg):
-        self.hub = HUB
+        self.msg = msg
+
+
+class SearcherError(CpeTagError):
+    def __init__(self, msg):
         self.msg = msg
