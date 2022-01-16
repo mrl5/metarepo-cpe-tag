@@ -25,7 +25,9 @@ def validate_batch(batch):
 class Schemas(str, Enum):
     package_json = "package.schema.json"
     batch_of_package_json = "batch.schema.json"
+    cpe = "cpe.schema.json"
     tagged_package_json = "tagged_package.schema.json"
+    tagged_batch = "tagged_batch.schema.json"
 
 
 def get_schema(schema: str) -> dict:
@@ -57,3 +59,19 @@ def get_batch_validator() -> Validator:
     store = get_schema_store()
     resolver = RefResolver.from_schema(nested_schema, store=store)
     return Draft7Validator(batch_schema, resolver=resolver)
+
+
+def get_tagged_package_validator() -> Validator:
+    schema = get_schema("tagged_package_json")
+    nested_schema = get_schema("cpe")
+    store = get_schema_store()
+    resolver = RefResolver.from_schema(nested_schema, store=store)
+    return Draft7Validator(schema, resolver=resolver)
+
+
+def get_tagged_batch_validator() -> Validator:
+    schema = get_schema("tagged_batch")
+    nested_schema = get_schema("cpe")
+    store = get_schema_store()
+    resolver = RefResolver.from_schema(nested_schema, store=store)
+    return Draft7Validator(schema, resolver=resolver)

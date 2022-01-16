@@ -1,3 +1,8 @@
+# IMPORTANT!
+#
+# this test suite ensures that JSON Schemas responsible for input validation
+# (defined in schemas/ dir) are respected by the codebase
+
 from contextlib import contextmanager
 
 import pytest

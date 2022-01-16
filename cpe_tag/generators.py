@@ -6,19 +6,19 @@
 import asyncio
 
 from cpe_tag.cpe import convert_quasi_cpe_to_regex
-from cpe_tag.searchers import query_cpe_match
+from cpe_tag.searchers import query_cpe_match, query_multi_cpe_match
 
 
 def tag_packages_with_cpes(packages: list, query_function=None, **kwargs) -> list:
     if query_function is None:
-        query_function = query_cpe_match
+        query_function = query_multi_cpe_match
 
     quasi_cpes = []
     for package in packages:
-        for x in package["versions"]:
-            item = x.get("quasi_cpe")
-            if item is not None:
-                quasi_cpes.append(item)
+        for version in package["versions"]:
+            q = version.get("quasi_cpe")
+            if q is not None:
+                quasi_cpes.append(q)
     patterns = list(map(lambda x: convert_quasi_cpe_to_regex(x), quasi_cpes))
     pattern = "|".join(patterns)
     cpes = asyncio.run(query_function(pattern, **kwargs))
