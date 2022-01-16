@@ -53,11 +53,13 @@ mkdir -p ~/feeds/json && cd $_
 
 4. See how it works:
 ```bash
-input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29.3"}, {"version": "1.30.1"}, {"version": "1.31.0"}, {"version": "9999"}]}'
 feed=~/feeds/json/nvdcpematch-1.0.json.gz
+single_input='{"name": "busybox", "versions": [{"version": "1.29.0"}, {"version": "1.29.3"}, {"version": "1.30.1"}, {"version": "1.31.0"}, {"version": "9999"}]}'
+batch_input='[{"name": "busybox", "versions": [{"version": "1.29.3"}, {"version": "1.31.0"}]}, {"name":"libxml2", "versions":[{"version":"2.9.10-r5"}]}]'
 
 export PYTHONPATH=./
-./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$input"
+./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$single_input"
+./bin/tag_package_with_cpes.py --cpe-match-feed "$feed" "$batch_input"
 ```
 
 5. Come back later and update CPE feed:

@@ -20,8 +20,7 @@
           "cpes": {
             "type": "array",
             "items": {
-              "type": "string",
-              "description": "https://csrc.nist.gov/schema/cpe/2.3/cpe-naming_2.3.xsd"
+              "$ref": "/schemas/cpe"
             }
           }
         }
