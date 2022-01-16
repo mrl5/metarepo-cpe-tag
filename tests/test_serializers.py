@@ -1,11 +1,6 @@
 import pytest
-from jsonschema import ValidationError
 
-from cpe_tag.serializers import (
-    serialize_package_json,
-    serialize_package_name,
-    serialize_version,
-)
+from cpe_tag.serializers import serialize_package_name, serialize_version
 
 testnames = [
     ("a", tuple(["", "a"])),
@@ -28,14 +23,6 @@ testversions = [
     (0, tuple(["", ""])),
 ]
 
-errordata = (
-    {},  # type: ignore
-    {"name": "a"},
-    {"versions": []},
-    {"name": "a", "versions": 123},
-    {"name": "a", "versions": [{"a": "b"}]},
-)
-
 
 @pytest.mark.parametrize("name, expected", testnames)
 def test_serialize_package_name(name, expected):
@@ -45,9 +32,3 @@ def test_serialize_package_name(name, expected):
 @pytest.mark.parametrize("funtoo_version, expected", testversions)
 def test_serialize_version(funtoo_version, expected):
     assert serialize_version(funtoo_version) == expected
-
-
-@pytest.mark.parametrize("package", errordata)
-def test_serialize_package_json_exceptions(package):
-    with pytest.raises(ValidationError):
-        serialize_package_json(package)

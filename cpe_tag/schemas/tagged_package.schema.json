@@ -1,6 +1,9 @@
 {
-  "title": "package",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/schemas/tagged_package.schema.json",
+  "title": "cpe tagged package",
   "type": "object",
+  "required": ["name", "versions"],
   "properties": {
     "name": {"type": "string", "description": "package name"},
     "homepages": {
@@ -11,19 +14,18 @@
       "type": "array",
       "items": {
         "type": "object",
+        "required": ["version"],
         "properties": {
           "version": {"type": "string", "description": "package version"},
           "cpes": {
             "type": "array",
             "items": {
               "type": "string",
-              "description": "NVD CPE - structured naming scheme for information technology systems, software, and packages"
+              "description": "https://csrc.nist.gov/schema/cpe/2.3/cpe-naming_2.3.xsd"
             }
           }
-        },
-        "required": ["version"]
+        }
       }
     }
-  },
-  "required": ["name", "versions"]
+  }
 }

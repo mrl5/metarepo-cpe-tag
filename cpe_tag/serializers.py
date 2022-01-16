@@ -6,23 +6,13 @@
 from re import match, sub
 from typing import Tuple
 
-from jsonschema import validate
-
 from cpe_tag.cpe import get_quasi_cpe
-from cpe_tag.utils import get_schema
 
 VendorAndProduct = Tuple[str, str]
 VersionAndUpdate = Tuple[str, str]
 
 
-def throw_on_invalid_package(package: dict):
-    package_json_schema = get_schema("package_json")
-    validate(instance=package, schema=package_json_schema)
-
-
 def serialize_package_json(package: dict) -> dict:
-    throw_on_invalid_package(package)
-
     versions = package["versions"]
     vendor, product = serialize_package_name(package["name"])
     for v in versions:
