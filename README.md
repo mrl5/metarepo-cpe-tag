@@ -1,4 +1,6 @@
 # metarepo-cpe-tag
+[![master status](https://github.com/mrl5/metarepo-cpe-tag/actions/workflows/python-app.yml/badge.svg?event=push)](https://github.com/mrl5/metarepo-cpe-tag/actions/workflows/python-app.yml)
+
 This is an implementation of [CPE tagger] from [Funtoo Linux Optimization Proposal]s.
 Main objective is to tag [Funtoo meta-repo] catpkgs with corresponding
 [CPE]s.
