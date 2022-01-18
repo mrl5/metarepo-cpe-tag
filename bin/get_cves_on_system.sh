@@ -3,7 +3,9 @@
 regex='(.+)-([0-9]+.*)(\.ebuild)'
 base=/var/db/pkg
 parallel_jobs=8
-dump_dir=dump_$(date -uIseconds)
+
+IFS='T' read -a timestamp <<< "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+dump_dir=dump/${timestamp[0]}/${timestamp[1]}
 
 mkdir -p ${dump_dir}
 for category in `ls ${base}`; do
