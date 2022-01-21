@@ -6,3 +6,8 @@
 from pathlib import Path
 
 DEFAULT_FEED_PATH = str(Path.home() / "feeds/json/nvdcpematch-1.0.json.gz")
+KNOWN_VENDORS = [
+    "google",
+    "oracle",
+]
+PRODUCT_ADAPTER = {"nodejs": "node.js"}

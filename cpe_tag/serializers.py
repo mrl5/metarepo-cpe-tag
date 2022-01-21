@@ -6,6 +6,7 @@
 from re import match, sub
 from typing import Tuple
 
+from cpe_tag.conf import KNOWN_VENDORS
 from cpe_tag.cpe import get_quasi_cpe
 
 VendorAndProduct = Tuple[str, str]
@@ -25,9 +26,7 @@ def serialize_package_json(package: dict) -> dict:
 
 
 def serialize_package_name(funtoo_package: str) -> VendorAndProduct:
-    known_vendors = ["google", "oracle"]
-
-    result = match(rf"^({'|'.join(known_vendors)})(.+)", funtoo_package)
+    result = match(rf"^({'|'.join(KNOWN_VENDORS)})(.+)", funtoo_package)
 
     if result is None:
         vendor = ""
