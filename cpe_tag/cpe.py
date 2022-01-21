@@ -6,6 +6,7 @@
 from dataclasses import astuple, dataclass
 from re import escape
 
+from cpe_tag.conf import PRODUCT_ADAPTER
 from cpe_tag.errors import GeneratorError
 
 
@@ -42,6 +43,11 @@ def get_quasi_cpe(**wfn_attrs) -> str:
 def convert_quasi_cpe_to_regex(quasi_cpe: str) -> str:
     escaped = escape(quasi_cpe)
     w = WfnAttrs(*escaped.split(":"))
+    w.product = (
+        f"({w.product}|{PRODUCT_ADAPTER[w.product]})"
+        if w.product in PRODUCT_ADAPTER
+        else w.product
+    )
     w.update = "[\\*\\-]" if len(w.update) == 0 else f"({w.update}|\\*)"
     w.edition = "[^:]+" if len(w.edition) == 0 else f"({w.edition}|\\*)"
     w.language = "[^:]+" if len(w.language) == 0 else f"({w.language}|\\*)"
