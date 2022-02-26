@@ -34,6 +34,11 @@ quasi_cpe_testdata = [
         ":nodejs:1337:::::linux::",
         ":(nodejs|node.js):1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
     ),
+    (
+        {"product": "apache", "version": "1337"},
+        ":apache:1337:::::linux::",
+        ":(apache|apache_http_server):1337:[\\*\\-]:[^:]+:[^:]+:[^:]+:(linux|\\*):[^:]+:[^:]",
+    ),
 ]
 
 

@@ -10,4 +10,4 @@ KNOWN_VENDORS = [
     "google",
     "oracle",
 ]
-PRODUCT_ADAPTER = {"nodejs": "node.js"}
+PRODUCT_ADAPTER = {"nodejs": "node.js", "apache": "apache_http_server"}
